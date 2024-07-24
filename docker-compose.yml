@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: hoangbao179/task-fe:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://139.180.132.33:5000
+    depends_on:
+      - backend
+
+  backend:
+    image: hoangbao179/task-be:latest
+    environment:
+      - MONGO_URI=mongodb://139.180.132.33:27017/task-manager
+    ports:
+      - "5000:5000"
