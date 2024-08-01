@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: ${DOCKER_USERNAME}/task-fe:latest
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL='https://lenlichtrinh.info/api'
+
+  backend:
+    image: ${DOCKER_USERNAME}/task-be:latest
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=postgresql://${DB_USERNAME}:${DB_PASSWORD}@${VPS_IP}:5432/${DB_NAME}
