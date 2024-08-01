@@ -54,13 +54,13 @@ jobs:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         VPS_USER: ${{ secrets.VPS_USER }}
         VPS_IP: ${{ secrets.VPS_IP }}
-        DOCKER_TAG: ${{ github.sha }}
+        DOCKER_TAG_BACKEND: ${{ github.sha }}
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key.pem
         chmod 600 ssh_key.pem
         ssh -t -o StrictHostKeyChecking=no -i ssh_key.pem ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} << EOF
           cd /home/brian/task-manager
-          echo -e "DB_USERNAME=${DB_USERNAME}\nDB_PASSWORD=${DB_PASSWORD}\nDB_HOST=${DB_HOST}\nDB_PORT=${DB_PORT}\nDB_NAME=${DB_NAME}\nDOCKER_TAG=${DOCKER_TAG}" > .env
+          echo -e "DB_USERNAME=${DB_USERNAME}\nDB_PASSWORD=${DB_PASSWORD}\nDB_HOST=${DB_HOST}\nDB_PORT=${DB_PORT}\nDB_NAME=${DB_NAME}\nDOCKER_TAG_BACKEND=${DOCKER_TAG_BACKEND}" > .env
           cat .env
           docker-compose pull
           docker-compose down
