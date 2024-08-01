@@ -62,7 +62,6 @@ jobs:
           cd /home/brian/task-manager
           echo -e "DB_USERNAME=${DB_USERNAME}\nDB_PASSWORD=${DB_PASSWORD}\nDB_HOST=${DB_HOST}\nDB_PORT=${DB_PORT}\nDB_NAME=${DB_NAME}\nDOCKER_TAG_BACKEND=${DOCKER_TAG_BACKEND}" > .env
           cat .env
-          docker-compose pull
-          docker-compose down
-          docker-compose up -d
+          docker-compose pull backend
+          docker-compose up -d backend
         EOF
