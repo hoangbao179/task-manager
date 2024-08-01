@@ -46,6 +46,7 @@ jobs:
     steps:
     - name: Deploy to VPS
       env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DB_USERNAME: ${{ secrets.DB_USERNAME }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DB_HOST: ${{ secrets.DB_HOST }}
@@ -71,7 +72,7 @@ jobs:
           fi
 
           # Update .env with new Docker tag
-          echo -e "DB_USERNAME=${DB_USERNAME}\nDB_PASSWORD=${DB_PASSWORD}\nDB_HOST=${DB_HOST}\nDB_PORT=${DB_PORT}\nDB_NAME=${DB_NAME}\nDOCKER_TAG_BACKEND=${DOCKER_TAG_BACKEND}" > .env
+          echo -e "DOCKER_USERNAME=${DOCKER_USERNAME}\nDB_USERNAME=${DB_USERNAME}\nDB_PASSWORD=${DB_PASSWORD}\nDB_HOST=${DB_HOST}\nDB_PORT=${DB_PORT}\nDB_NAME=${DB_NAME}\nDOCKER_TAG_BACKEND=${DOCKER_TAG_BACKEND}" > .env
           cat .env
 
           # Pull and run the new Docker image
