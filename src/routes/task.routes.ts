@@ -3,10 +3,10 @@ const { createTask, getListTasks, getTaskById, updateTask, deleteTask } = requir
 
 const router = express.Router();
 
-router.post('/', createTask);
-router.get('/', getListTasks);
-router.get('/:id', getTaskById);
-router.put('/:id', updateTask);
-router.delete('/:id', deleteTask);
+router.post('/tasks', createTask);
+router.get('/tasks', getListTasks);
+router.get('/tasks/:id', getTaskById);
+router.put('/tasks/:id', updateTask);
+router.delete('/tasks/:id', deleteTask);
 
 module.exports = router;
