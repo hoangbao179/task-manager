@@ -1,4 +1,4 @@
-import { IErrorResponseData, IResponseData } from "../response/response";
+import { IErrorResponseData, IResponseData } from "../models/response";
 
 export function formatResponse<T>(data: T, message: string, errors: IErrorResponseData[] = [], statusCode: number = 200): IResponseData<T> {
     return {

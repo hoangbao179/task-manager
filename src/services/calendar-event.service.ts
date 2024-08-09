@@ -1,57 +1,57 @@
-import CalendarEvent from "../models/calendar-event";
+import { AppDataSource } from "../config/data-source";
+import { CalendarEvent } from "../entities/calendar-event";
 import { CalendarEventStatus } from "../enums/calendar-event.status";
-import { ICalendarEvent, ICalendarEventCreationAttributes } from "../models/calendar-event";
 
-// Define the types for the parameters
 interface ICreateCalendarEventParams {
   title: string;
   description: string;
   status: CalendarEventStatus;
   startDate: Date;
-  dueDate: Date;
+  endDate: Date;
 }
 
 interface IUpdateCalendarEventParams {
   title?: string;
   description?: string;
   status?: CalendarEventStatus;
-  dueDate?: Date;
+  endDate?: Date;
 }
 
 const validateStatus = (status: CalendarEventStatus): CalendarEventStatus => {
   return Object.values(CalendarEventStatus).includes(status) ? status : CalendarEventStatus.PENDING;
 };
 
-const createCalendarEvent = async (params: ICreateCalendarEventParams): Promise<ICalendarEvent> => {
-  const { title, description, status, startDate, dueDate } = params;
+const createCalendarEvent = async (params: ICreateCalendarEventParams): Promise<CalendarEvent> => {
+  const { title, description, status, startDate, endDate } = params;
   const validatedStatus = validateStatus(status);
-  return await CalendarEvent.create({ title, description, status: validatedStatus, startDate, dueDate });
+  const calendarEventRepository = AppDataSource.getRepository(CalendarEvent);
+  const event = calendarEventRepository.create({ title, description, status: validatedStatus, startDate, endDate });
+  return await calendarEventRepository.save(event);
 };
 
-const getListCalendarEvents = async (): Promise<ICalendarEvent[]> => {
-  try {
-    return await CalendarEvent.findAll();
-  } catch (error) {
-    throw error;
-  }
+const getListCalendarEvents = async (): Promise<CalendarEvent[]> => {
+  const calendarEventRepository = AppDataSource.getRepository(CalendarEvent);
+  return await calendarEventRepository.find();
 };
 
-const getCalendarEventById = async (id: string): Promise<ICalendarEvent | null> => {
-  return await CalendarEvent.findByPk(id);
+const getCalendarEventById = async (id: string): Promise<CalendarEvent | null> => {
+  const calendarEventRepository = AppDataSource.getRepository(CalendarEvent);
+  return await calendarEventRepository.findOneBy({ id });
 };
 
 const updateCalendarEvent = async (id: string, params: IUpdateCalendarEventParams): Promise<number> => {
-  const { title, description, status, dueDate } = params;
+  const { title, description, status, endDate } = params;
   const validatedStatus = status !== undefined ? validateStatus(status) : undefined;
-  const [affectedRows] = await CalendarEvent.update(
-    { title, description, status: validatedStatus, dueDate },
-    { where: { id } }
-  );
-  return affectedRows;
+  
+  const calendarEventRepository = AppDataSource.getRepository(CalendarEvent);
+  const result = await calendarEventRepository.update(id, { title, description, status: validatedStatus, endDate });
+  return result.affected || 0;
 };
 
 const deleteCalendarEvent = async (id: string): Promise<number> => {
-  return await CalendarEvent.destroy({ where: { id } });
+  const calendarEventRepository = AppDataSource.getRepository(CalendarEvent);
+  const result = await calendarEventRepository.delete(id);
+  return result.affected || 0;
 };
 
 export {

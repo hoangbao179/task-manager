@@ -4,7 +4,7 @@ import { formatResponse } from '../utils/response.utils';
 import { HttpStatusCode } from '../enums/http.status';
 
 export const createCalendarEvent = async (req: Request, res: Response): Promise<Response> => {
-  const { title, description, status, startDate, dueDate } = req.body;
+  const { title, description, status, startDate, endDate } = req.body;
 
   try {
     const newCalendarEvent = await CalendarEventService.createCalendarEvent({
@@ -12,7 +12,7 @@ export const createCalendarEvent = async (req: Request, res: Response): Promise<
       description,
       status,
       startDate,
-      dueDate,
+      endDate,
     });
     return res.status(HttpStatusCode.CREATED).json(formatResponse(newCalendarEvent, 'Calendar event created successfully'));
   } catch (error: any) {
@@ -45,14 +45,14 @@ export const getCalendarEventById = async (req: Request, res: Response): Promise
 
 export const updateCalendarEvent = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
-  const { title, description, status, dueDate } = req.body;
+  const { title, description, status, endDate } = req.body;
 
   try {
     const affectedRows = await CalendarEventService.updateCalendarEvent(id, {
       title,
       description,
       status,
-      dueDate,
+      endDate,
     });
 
     if (affectedRows > 0) {

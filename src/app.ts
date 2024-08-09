@@ -1,43 +1,34 @@
-import express, { Application } from 'express';
-import CalendarEventRouter from './routes/calendar-event.routes';
-import sequelize from './config/connection';
-import cors from 'cors';
-import dotenv from 'dotenv';
-
-// Initialize environment variables
+import "reflect-metadata";
+import express from "express";
+import { AppDataSource } from "./config/data-source";
+import routes from "./routes/index.router";
+import * as dotenv from "dotenv";
+import cors from "cors";
 dotenv.config();
 
-const app: Application = express();
-
-// Middleware for CORS
-app.use(cors({
-    origin: '*', 
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}));
-
-// Middleware to parse JSON bodies
+const app = express();
 app.use(express.json());
 
-// Route handling
-app.use('/api', CalendarEventRouter);
+app.use(cors({
+  origin: 'https://lenlichhtrinh.info', 
+  methods: 'GET,POST,PUT,DELETE',
+  credentials: true
+}));
 
-// Database synchronization
-sequelize.sync({ alter: true })
-    .then(() => {
-        console.log('Database connected and synchronized');
-    })
-    .catch(err => {
-        console.error('Database connection error:', err);
+
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Data Source has been initialized!");
+
+    app.use('/api', routes);  
+
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
+  })
+  .catch((err) => {
+    console.error("Error during Data Source initialization:", err);
+  });
 
-// Global error handling middleware
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    console.error('Unhandled error:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
-});
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+export default app;
