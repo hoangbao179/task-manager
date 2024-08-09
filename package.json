@@ -2,10 +2,11 @@
   "name": "task-manager",
   "version": "1.0.0",
   "description": "Backend for task manager application",
-  "main": "src/app.js",
+  "main": "src/app.ts",
+  "type": "commonjs",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "start": "ts-node src/app.ts",
+    "dev": "nodemon -r ts-node/register src/app.ts"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -13,13 +14,17 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "firebase-admin": "^12.2.0",
+    "module-alias": "^2.2.3",
     "pg": "^8.12.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.3",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "supertest": "^7.0.0"
+    "@types/cors": "^2.8.17",
+    "nodemon": "^3.1.4",
+    "supertest": "^7.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
   }
 }
