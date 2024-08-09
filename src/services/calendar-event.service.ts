@@ -1,6 +1,6 @@
-import CalendarEvent from "../entity/calendar-event";
+import CalendarEvent from "../models/calendar-event";
 import { CalendarEventStatus } from "../enums/calendar-event.status";
-import { ICalendarEvent, ICalendarEventCreationAttributes } from "../entity/calendar-event";
+import { ICalendarEvent, ICalendarEventCreationAttributes } from "../models/calendar-event";
 
 // Define the types for the parameters
 interface ICreateCalendarEventParams {
