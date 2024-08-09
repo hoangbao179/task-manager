@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import * as CalendarEventService from '../services/calendar-event.service'; // Ensure correct import
+import * as CalendarEventService from '../services/calendar-event.service';
+import { formatResponse } from '../utils/response.utils';
+import { HttpStatusCode } from '../enums/http.status';
 
-// Define the types for request and response
 export const createCalendarEvent = async (req: Request, res: Response): Promise<Response> => {
   const { title, description, status, startDate, dueDate } = req.body;
 
@@ -13,18 +14,18 @@ export const createCalendarEvent = async (req: Request, res: Response): Promise<
       startDate,
       dueDate,
     });
-    return res.status(201).json(newCalendarEvent);
+    return res.status(HttpStatusCode.CREATED).json(formatResponse(newCalendarEvent, 'Calendar event created successfully'));
   } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+    return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(formatResponse(null, error.message, [], HttpStatusCode.INTERNAL_SERVER_ERROR));
   }
 };
 
 export const getListCalendarEvents = async (req: Request, res: Response): Promise<Response> => {
   try {
     const calendarEvents = await CalendarEventService.getListCalendarEvents();
-    return res.status(200).json(calendarEvents);
+    return res.status(HttpStatusCode.OK).json(formatResponse(calendarEvents, 'List of calendar events retrieved successfully'));
   } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+    return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(formatResponse(null, error.message, [], HttpStatusCode.INTERNAL_SERVER_ERROR));
   }
 };
 
@@ -33,12 +34,12 @@ export const getCalendarEventById = async (req: Request, res: Response): Promise
   try {
     const calendarEvent = await CalendarEventService.getCalendarEventById(id);
     if (calendarEvent) {
-      return res.status(200).json(calendarEvent);
+      return res.status(HttpStatusCode.OK).json(formatResponse(calendarEvent, 'Calendar event retrieved successfully'));
     } else {
-      return res.status(404).json({ message: 'CalendarEvent not found' });
+      return res.status(HttpStatusCode.NOT_FOUND).json(formatResponse(null, 'Calendar event not found', [], HttpStatusCode.NOT_FOUND));
     }
   } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+    return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(formatResponse(null, error.message, [], HttpStatusCode.INTERNAL_SERVER_ERROR));
   }
 };
 
@@ -55,12 +56,12 @@ export const updateCalendarEvent = async (req: Request, res: Response): Promise<
     });
 
     if (affectedRows > 0) {
-      return res.status(200).json({ message: 'CalendarEvent updated successfully' });
+      return res.status(HttpStatusCode.OK).json(formatResponse(null, 'Calendar event updated successfully'));
     } else {
-      return res.status(404).json({ message: 'CalendarEvent not found' });
+      return res.status(HttpStatusCode.NOT_FOUND).json(formatResponse(null, 'Calendar event not found', [], HttpStatusCode.NOT_FOUND));
     }
   } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+    return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(formatResponse(null, error.message, [], HttpStatusCode.INTERNAL_SERVER_ERROR));
   }
 };
 
@@ -70,11 +71,11 @@ export const deleteCalendarEvent = async (req: Request, res: Response): Promise<
     const affectedRows = await CalendarEventService.deleteCalendarEvent(id);
 
     if (affectedRows > 0) {
-      return res.status(200).json({ message: 'CalendarEvent deleted successfully' });
+      return res.status(HttpStatusCode.OK).json(formatResponse(null, 'Calendar event deleted successfully'));
     } else {
-      return res.status(404).json({ message: 'CalendarEvent not found' });
+      return res.status(HttpStatusCode.NOT_FOUND).json(formatResponse(null, 'Calendar event not found', [], HttpStatusCode.NOT_FOUND));
     }
   } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+    return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(formatResponse(null, error.message, [], HttpStatusCode.INTERNAL_SERVER_ERROR));
   }
 };
