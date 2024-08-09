@@ -1,15 +1,15 @@
-class TaskStatus {
+class CalendarEventStatus {
     static PENDING = 1;
     static COMPLETED = 2;
     static IN_PROGRESS = 3;
   
     static getStatusName(value) {
       switch (value) {
-        case TaskStatus.PENDING:
+        case CalendarEventStatus.PENDING:
           return 'Pending';
-        case TaskStatus.COMPLETED:
+        case CalendarEventStatus.COMPLETED:
           return 'Completed';
-        case TaskStatus.IN_PROGRESS:
+        case CalendarEventStatus.IN_PROGRESS:
           return 'In Progress';
         default:
           return 'Unknown';
@@ -17,4 +17,4 @@ class TaskStatus {
     }
   }
   
-  module.exports = TaskStatus;
+  module.exports = CalendarEventStatus;

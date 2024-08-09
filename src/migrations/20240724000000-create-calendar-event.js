@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('tasks', {
+        await queryInterface.createTable('calendar-event', {
             id: {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4,
@@ -37,6 +37,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('tasks');
+        await queryInterface.dropTable('calendar-event');
     },
 };

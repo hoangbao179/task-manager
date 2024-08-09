@@ -1,9 +1,8 @@
-// src/models/taskModel.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
-const TaskStatus = require('../enums/TaskStatus');
+const CalendarEventStatus = require('../enums/calendar-event.status');
 
-const Task = sequelize.define('Task', {
+const CalendarEvent = sequelize.define('calendar-event', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -20,10 +19,10 @@ const Task = sequelize.define('Task', {
   status: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    defaultValue: TaskStatus.PENDING,
+    defaultValue: CalendarEventStatus.PENDING,
     validate: {
       isIn: {
-        args: [[TaskStatus.PENDING, TaskStatus.COMPLETED]],
+        args: [[CalendarEventStatus.PENDING, CalendarEventStatus.COMPLETED]],
         msg: 'Invalid status value',
       },
     },
@@ -40,4 +39,4 @@ const Task = sequelize.define('Task', {
   timestamps: false, 
 });
 
-module.exports = Task;
+module.exports = CalendarEvent;
