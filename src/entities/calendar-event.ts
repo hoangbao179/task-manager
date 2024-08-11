@@ -25,6 +25,9 @@ export class CalendarEvent {
   @Column({ type: 'timestamp', name: 'end_date' })  
   endDate!: Date;
 
+  @Column({ type: 'boolean', default: false, name: 'is_all_day' })
+  isAllDay?: boolean;
+
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt!: Date;
 

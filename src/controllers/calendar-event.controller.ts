@@ -3,8 +3,19 @@ import * as CalendarEventService from '../services/calendar-event.service';
 import { formatResponse } from '../utils/response.utils';
 import { HttpStatusCode } from '../enums/http.status';
 
+export const getCalendarEvents = async (req: Request, res: Response) => {
+  const requestData = req.body;
+  const result = await CalendarEventService.getFilteredCalendarEvents(requestData);
+  if (result.statusCode === 200) {
+    return res.status(200).json(formatResponse(result.data, ''));
+  } else {
+    return res.status(result.statusCode).json({ message: result.message });
+  }
+};
+
+
 export const createCalendarEvent = async (req: Request, res: Response): Promise<Response> => {
-  const { title, description, status, startDate, endDate } = req.body;
+  const { title, description, status, startDate, endDate, startTime, endTime, minutesOffset, isAllDay } = req.body;
 
   try {
     const newCalendarEvent = await CalendarEventService.createCalendarEvent({
@@ -13,17 +24,12 @@ export const createCalendarEvent = async (req: Request, res: Response): Promise<
       status,
       startDate,
       endDate,
+      startTime,
+      endTime,
+      minutesOffset,
+      isAllDay
     });
     return res.status(HttpStatusCode.CREATED).json(formatResponse(newCalendarEvent, 'Calendar event created successfully'));
-  } catch (error: any) {
-    return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(formatResponse(null, error.message, [], HttpStatusCode.INTERNAL_SERVER_ERROR));
-  }
-};
-
-export const getListCalendarEvents = async (req: Request, res: Response): Promise<Response> => {
-  try {
-    const calendarEvents = await CalendarEventService.getListCalendarEvents();
-    return res.status(HttpStatusCode.OK).json(formatResponse(calendarEvents, 'List of calendar events retrieved successfully'));
   } catch (error: any) {
     return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(formatResponse(null, error.message, [], HttpStatusCode.INTERNAL_SERVER_ERROR));
   }
