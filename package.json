@@ -2,24 +2,39 @@
   "name": "task-manager",
   "version": "1.0.0",
   "description": "Backend for task manager application",
-  "main": "src/app.js",
+  "main": "src/app.ts",
+  "type": "commonjs",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "start": "ts-node src/app.ts",
+    "dev": "nodemon --inspect-brk -r ts-node/register src/app.ts",
+    "migration:run": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/config/data-source.ts",
+    "migration:generate": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate ./src/migrations/%npm_config_name%"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "firebase-admin": "^12.2.0",
+    "module-alias": "^2.2.3",
     "pg": "^8.12.0",
     "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.3",
+    "typeorm": "^0.3.20",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "supertest": "^7.0.0"
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "nodemon": "^3.1.4",
+    "sequelize-cli": "^6.6.2",
+    "supertest": "^7.0.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.0.4"
   }
 }
