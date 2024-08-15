@@ -21,17 +21,11 @@ jobs:
     - name: Install dependencies
       run: npm install  # Install Node.js dependencies
 
-    - name: Print environment variables
-      run: |
-        echo "DB_USERNAME=${{ secrets.DB_USERNAME }}"
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
-        echo "DB_HOST=${{ secrets.DB_HOST }}"
-        echo "DB_PORT=${{ secrets.DB_PORT }}"
-        echo "DB_NAME=${{ secrets.DB_NAME }}"
-        echo "DOCKER_TAG=${{ github.sha }}"
+    - name: Build TypeScript
+      run: npm run build  # Compile TypeScript to JavaScript
 
     - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/task-be:${{ github.sha }} . # Build the Docker image for the backend
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/task-be:${{ github.sha }} .  # Build the Docker image for the backend
 
     - name: Login to DockerHub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin  # Login to DockerHub

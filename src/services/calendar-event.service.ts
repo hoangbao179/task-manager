@@ -99,11 +99,6 @@ export const createCalendarEvent = async (params: ICreateCalendarEventParams): P
   }
 };
 
-export const getCalendarEventById2222 = async (id: string): Promise<CalendarEvent | null> => {
-  return  await calendarEventRepository.findOneBy({ id });
-
-};
-
 export const getCalendarEventById = async (id: string): Promise<CalendarEventResponse | null> => {
   const calendarEvent = await calendarEventRepository.findOneBy({ id });
 
