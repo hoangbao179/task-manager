@@ -1,20 +1,48 @@
+
 # Task Manager
 
-Task Manager is a simple web application to create and manage daily tasks. The application is built using Node.js, Express, and MongoDB.
+This is a task management application built with Node.js, TypeScript, and PostgreSQL.
 
-## Table of Contents
+## Prerequisites
 
-- [Introduction](#introduction)
-- [Features](#features)
+- Node.js
+- PostgreSQL
+- Docker (optional)
 
-## Introduction
+## Installation
 
-Task Manager helps you manage your daily tasks easily. You can create, read, update, and delete tasks through a RESTful API.
+1. Clone the repository:
+   git clone https://github.com/hoangbao/task-manager.git
+2. Navigate to the project directory:
+   cd task-manager
+3. Install dependencies:
+   npm install
+4. Create a `.env` file  and configuring it according to your environment:
+   cp .env
+5. Run the migrations:
+   npm run migrate
 
-## Features
+## Running the Application
 
-- Add new tasks
-- View all tasks
-- View task details by ID
-- Update tasks
-- Delete tasks
+### Locally
+npm run dev
+### With Docker
+
+docker-compose up --build
+
+## API Endpoints
+
+- **User Routes**
+  - `POST /api/users`: Create a new user
+  - `GET /api/users`: Get all users
+  - `GET /api/users/:id`: Get a user by ID
+
+- **Calendar Event Routes**
+  - `POST /api/calendar-events`: Create a new event
+  - `GET /api/calendar-events`: Get all events
+  - `GET /api/calendar-events/:id`: Get an event by ID
+
+
+## License
+
+This project is licensed under the MIT License.
