@@ -4,6 +4,10 @@ import { User } from '../entities/user';
 export class UserService {
   private userRepository = AppDataSource.getRepository(User);
 
+  constructor() {
+    this.userRepository = AppDataSource.getRepository(User);
+  }
+
   async createUser(userData: Partial<User>): Promise<User> {
     const user = this.userRepository.create(userData);
     return await this.userRepository.save(user);
@@ -29,4 +33,9 @@ export class UserService {
   async getAllUsers(): Promise<User[]> {
     return await this.userRepository.find();
   }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return await this.userRepository.findOne({ where: { email } });
+  }
+
 }
