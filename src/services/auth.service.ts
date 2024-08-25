@@ -9,8 +9,8 @@ export class AuthService {
   private userService = new UserService();
 
   async login(email: string, password: string): Promise<string> {
-    const user = await this.userService.findByEmail(email);
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    const user = await this.userService.getUserByEmail(email);
+    if (!user || !(bcrypt.compare(password, user.password))) {
       throw new Error('Invalid email or password');
     }
 
@@ -18,7 +18,7 @@ export class AuthService {
     return token;
   }
   async register(userData: IUser): Promise<User> {
-    const existingUser = await this.userService.findByEmail(userData.email);
+    const existingUser = await this.userService.getUserByEmail(userData.email);
     if (existingUser) {
       throw new Error('Email already in use');
     }
