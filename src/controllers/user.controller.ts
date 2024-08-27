@@ -75,7 +75,8 @@ export class UserController {
       const userInfo = {
         id: user.id,
         email: user.email,
-        fullName: user.fullName,
+        firstName: user.firstName,
+        lastName: user.lastName,
       };
   
       return res.status(HttpStatusCode.OK).json(formatResponse(userInfo, 'User info retrieved successfully'));

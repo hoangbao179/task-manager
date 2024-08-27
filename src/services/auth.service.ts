@@ -14,7 +14,7 @@ export class AuthService {
       throw new Error('Invalid email or password');
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email, fullName: user.fullName }, process.env.JWT_SECRET!, { expiresIn: '72h' });
+    const token = jwt.sign({ id: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName }, process.env.JWT_SECRET!, { expiresIn: '72h' });
     return token;
   }
   async register(userData: IUser): Promise<User> {
@@ -25,7 +25,8 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     const newUser = new User();
-    newUser.fullName = userData.fullName;
+    newUser.lastName = userData.lastName;
+    newUser.firstName = userData.firstName
     newUser.email = userData.email;
     newUser.password = hashedPassword;
 
