@@ -14,7 +14,7 @@ export class AuthService {
       throw new Error('Invalid email or password');
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET!, { expiresIn: '72h' });
+    const token = jwt.sign({ id: user.id, email: user.email, fullName: user.fullName }, process.env.JWT_SECRET!, { expiresIn: '72h' });
     return token;
   }
   async register(userData: IUser): Promise<User> {

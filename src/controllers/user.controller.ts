@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UserService } from '../services/user.service';
 import { User } from '../entities/user';
 import { HttpStatusCode } from '../enums/http.status';
+import { formatResponse } from '../utils/response.utils';
 
 const userService = new UserService();
 
@@ -61,4 +62,24 @@ export class UserController {
       return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: 'Failed to retrieve users', error: error.message });
     }
   }
+
+  static async getCurrentUser (req: Request, res: Response): Promise<Response> {
+    try {
+      const user = await userService.getUserById((req as any).id);
+  
+      if (!user) {
+        return res.status(HttpStatusCode.NOT_FOUND).json(formatResponse(null, "user not found", [], HttpStatusCode.NOT_FOUND));
+      }
+  
+      const userInfo = {
+        id: user.id,
+        email: user.email,
+        fullName: user.fullName,
+      };
+  
+      return res.status(HttpStatusCode.OK).json(formatResponse(userInfo, 'User info retrieved successfully'));
+    } catch (error) {
+      return res.status(500).json(formatResponse(null, 'Internal server error'));
+    }
+  };
 }
