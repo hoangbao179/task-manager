@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/auth.service';
 import { IUser } from 'models/user/IUser.model';
+import { HttpStatusCode } from '../enums/http.status';
+import { formatResponse } from '../utils/response.utils';
 
 const authService = new AuthService();
 
@@ -9,9 +11,9 @@ export const login = async (req: Request, res: Response) => {
 
   try {
     const token = await authService.login(email, password);
-    res.json({ data: { token }, message: 'Login success', statusCode: 200, errors: [] });
+    return res.status(HttpStatusCode.OK).json(formatResponse(token, ''));
   } catch (error) {
-    res.status(401).json({ message:  error.message, statusCode: 401, errors: [{ propertyName: 'email', errorMessage: error.message }] });
+    return res.status(HttpStatusCode.UNAUTHORIZED).json(formatResponse(null, error.message));
   }
 };
 
@@ -20,8 +22,8 @@ export const register = async (req: Request, res: Response) => {
 
   try {
     const user = await authService.register({ fullName, email, password });
-    res.json({ data: user, message: 'Register success', statusCode: 201, errors: [] });
+    return res.status(HttpStatusCode.CREATED).json(formatResponse(user, ''));
   } catch (error) {
-    res.status(400).json({ message: 'Register fail', statusCode: 400, errors: [{ propertyName: 'email', errorMessage: error.message }] });
+    return res.status(HttpStatusCode.BAD_REQUEST).json(formatResponse(null, "Register fail"));
   }
 };

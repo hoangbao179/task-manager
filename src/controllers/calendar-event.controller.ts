@@ -13,7 +13,6 @@ export const getCalendarEvents = async (req: Request, res: Response) => {
   }
 };
 
-
 export const createCalendarEvent = async (req: Request, res: Response): Promise<Response> => {
   const { title, description, status, startDate, endDate, startTime, endTime, minutesOffset, isAllDay } = req.body;
 
