@@ -28,12 +28,7 @@ export class CalendarEventResponse implements ICalendarEventResponse {
     this.startDate = event.startDate.toISOString().split('T')[0];  
     this.endDate = event.endDate.toISOString().split('T')[0]; 
     this.isAllDay = event.isAllDay;
-    if (event.isAllDay) {
-      this.startTime = "00:00:00";
-      this.endTime = "23:59:59";
-    } else {
-      this.startTime = event.startDate.toTimeString().split(' ')[0];
-      this.endTime = event.endDate.toTimeString().split(' ')[0];
-    }
+    this.startTime = event.isAllDay ? "00:00:00": event.startDate.toISOString().split('T')[1].slice(0, 8);
+    this.endTime = event.isAllDay ? "23:59:59" : event.endDate.toISOString().split('T')[1].slice(0, 8);
   }
 }
