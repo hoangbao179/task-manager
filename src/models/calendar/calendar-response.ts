@@ -32,3 +32,9 @@ export class CalendarEventResponse implements ICalendarEventResponse {
     this.endTime = event.isAllDay ? "23:59:59" : event.endDate.toISOString().split('T')[1].slice(0, 8);
   }
 }
+
+export interface IFilteredCalendarEventResponse {
+  data: any[];
+  statusCode: number;
+  message?: string;
+}
