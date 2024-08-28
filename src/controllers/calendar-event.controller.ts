@@ -5,7 +5,8 @@ import { HttpStatusCode } from '../enums/http.status';
 
 export const getCalendarEvents = async (req: Request, res: Response) => {
   const requestData = req.body;
-  const result = await CalendarEventService.getFilteredCalendarEvents(requestData);
+  const userId = (req as any).userId;
+  const result = await CalendarEventService.getFilteredCalendarEvents(userId, requestData);
   if (result.statusCode === 200) {
     return res.status(200).json(formatResponse(result.data, ''));
   } else {
@@ -15,7 +16,7 @@ export const getCalendarEvents = async (req: Request, res: Response) => {
 
 export const createCalendarEvent = async (req: Request, res: Response): Promise<Response> => {
   const { title, description, status, startDate, endDate, startTime, endTime, minutesOffset, isAllDay } = req.body;
-
+  const userId = (req as any).userId;
   try {
     const newCalendarEvent = await CalendarEventService.createCalendarEvent({
       title,
@@ -27,7 +28,7 @@ export const createCalendarEvent = async (req: Request, res: Response): Promise<
       endTime,
       minutesOffset,
       isAllDay
-    });
+    }, userId);
     return res.status(HttpStatusCode.CREATED).json(formatResponse(newCalendarEvent, 'Calendar event created successfully'));
   } catch (error: any) {
     return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(formatResponse(null, error.message, [], HttpStatusCode.INTERNAL_SERVER_ERROR));

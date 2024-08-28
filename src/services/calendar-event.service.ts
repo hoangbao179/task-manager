@@ -18,8 +18,7 @@ const adjustToUtc = (date: string, time: string | null | undefined, minutesOffse
   return new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000);
 };
 
-
-export const getFilteredCalendarEvents = async (request: ICalendarEventRequest) => {
+export const getFilteredCalendarEvents = async ( userId: string, request: ICalendarEventRequest) => {
   const { startDate, endDate, minutesOffset } = request;
   try {
   const startDateTime = isNaN(Date.parse(startDate)) ? null : new Date(`${startDate}T00:00:00Z`);
@@ -44,6 +43,7 @@ export const getFilteredCalendarEvents = async (request: ICalendarEventRequest) 
          (event.startDate >= :startDate AND event.endDate >= :endDate AND event.startDate <= :endDate)`,
         { startDate: startDateTime, endDate: endDateTime }
       )
+      .andWhere('event.userId = :userId', { userId }) 
       .select([
         'event.id',
         'event.title',
@@ -76,7 +76,7 @@ export const getFilteredCalendarEvents = async (request: ICalendarEventRequest) 
   }
 };
 
-export const createCalendarEvent = async (params: ICreateCalendarEventParams): Promise<CalendarEvent> => {
+export const createCalendarEvent = async (params: ICreateCalendarEventParams, userId: string): Promise<CalendarEvent> => {
   const { title, description, status, startDate, startTime, endDate, endTime, minutesOffset, isAllDay } = params;
   const validatedStatus = validateStatus(status);
   
@@ -92,7 +92,7 @@ export const createCalendarEvent = async (params: ICreateCalendarEventParams): P
       endDate: utcEndDate,
       isAllDay: isAllDay || false,
     });
-
+    event.user = { id: userId } as any;
     return await calendarEventRepository.save(event);
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : 'Failed to create calendar event');

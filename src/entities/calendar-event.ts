@@ -11,6 +11,9 @@ export class CalendarEvent {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
+  @Column({ type: 'uuid', name: 'user_id' })
+  userId!: string;
+
   @Column({ type: 'varchar', length: 255 })
   title!: string;
 
