@@ -49,6 +49,7 @@ jobs:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         VPS_USER: ${{ secrets.VPS_USER }}
         VPS_IP: ${{ secrets.VPS_IP }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
         DOCKER_TAG_BACKEND: ${{ github.sha }}
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key.pem
@@ -66,7 +67,7 @@ jobs:
           fi
 
           # Update .env with new Docker tag
-          echo -e "DOCKER_USERNAME=${DOCKER_USERNAME}\nDB_USERNAME=${DB_USERNAME}\nDB_PASSWORD=${DB_PASSWORD}\nDB_HOST=${DB_HOST}\nDB_PORT=${DB_PORT}\nDB_NAME=${DB_NAME}\nDOCKER_TAG_BACKEND=${DOCKER_TAG_BACKEND}" > .env
+          echo -e "DOCKER_USERNAME=${DOCKER_USERNAME}\nDB_USERNAME=${DB_USERNAME}\nDB_PASSWORD=${DB_PASSWORD}\nDB_HOST=${DB_HOST}\nJWT_SECRET=${JWT_SECRET}\nDB_PORT=${DB_PORT}\nDB_NAME=${DB_NAME}\nDOCKER_TAG_BACKEND=${DOCKER_TAG_BACKEND}" > .env
           cat .env
 
           # Pull and run the new Docker image
