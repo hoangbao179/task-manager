@@ -19,7 +19,7 @@ export class UserController {
 
   static async getUser(req: Request, res: Response): Promise<Response> {
     try {
-      const userId = req.params.id;
+      const userId = req.params.userId;
       const user = await userService.getUserById(userId);
       if (user) {
         return res.status(HttpStatusCode.OK).json(formatResponse(user, ''));
@@ -32,7 +32,7 @@ export class UserController {
 
   static async updateUser(req: Request, res: Response): Promise<Response> {
     try {
-      const userId = req.params.id;
+      const userId = req.params.userId;
       const updateData: Partial<User> = req.body;
       const updatedUser = await userService.updateUser(userId, updateData);
       if (updatedUser) {
@@ -47,7 +47,7 @@ export class UserController {
 
   static async deleteUser(req: Request, res: Response): Promise<Response> {
     try {
-      const userId = req.params.id;
+      const userId = req.params.userId;
       await userService.deleteUser(userId);
       return res.status(HttpStatusCode.NO_CONTENT).send(); 
     } catch (error: any) {
@@ -66,20 +66,13 @@ export class UserController {
 
   static async getCurrentUser (req: Request, res: Response): Promise<Response> {
     try {
-      const user = await userService.getUserById((req as any).id);
+      const user = await userService.getUserById((req as any).userId);
   
       if (!user) {
         return res.status(HttpStatusCode.NOT_FOUND).json(formatResponse(null, "user not found", [], HttpStatusCode.NOT_FOUND));
       }
   
-      const userInfo = {
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      };
-  
-      return res.status(HttpStatusCode.OK).json(formatResponse(userInfo, 'User info retrieved successfully'));
+      return res.status(HttpStatusCode.OK).json(formatResponse(user, 'User info retrieved successfully'));
     } catch (error) {
       return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(formatResponse(null, 'Internal server error'));
     }
