@@ -91,8 +91,8 @@ export const createCalendarEvent = async (params: ICreateCalendarEventParams, us
       startDate: utcStartDate,
       endDate: utcEndDate,
       isAllDay: isAllDay || false,
+      userId: userId
     });
-    event.user = { id: userId } as any;
     return await calendarEventRepository.save(event);
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : 'Failed to create calendar event');

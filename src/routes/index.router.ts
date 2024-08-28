@@ -6,7 +6,7 @@ import  accountRoutes  from './account.router';
 import { authMiddleware } from '../middlewares/authMiddleware';
 const router = Router();
        
-router.use('/calendar-events', calendarEventRoutes);  
+router.use('/calendar-events', authMiddleware, calendarEventRoutes);  
 router.use('/auth', authRoutes);  
 router.use('/user', authMiddleware, userRoutes); 
 router.use('/account', authMiddleware, accountRoutes); 
