@@ -18,10 +18,8 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const register = async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password }: IUser = req.body;
-
   try {
-    const user = await authService.register({ firstName, lastName, email, password });
+    const user = await authService.register(req.body as IUser);
     return res.status(HttpStatusCode.CREATED).json(formatResponse(user, ''));
   } catch (error) {
     return res.status(HttpStatusCode.BAD_REQUEST).json(formatResponse(null, "Register fail"));

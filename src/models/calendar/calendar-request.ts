@@ -13,16 +13,15 @@ export interface ICreateCalendarEventParams {
   }
   
   export interface IUpdateCalendarEventParams {
-    title?: string;
-    description?: string;
-    status?: CalendarEventStatus;
-    endDate?: Date;
-  }
-  
-  export interface ICalendarEventRequest {
-    StartDate: string; 
-    EndDate: string; 
-    MinutesOffset: number;
+    title: string;
+    description: string;
+    status: CalendarEventStatus;
+    startDate: string;
+    startTime: string;
+    endDate: string;
+    endTime: string;
+    minutesOffset: number;
+    isAllDay?: boolean;
   }
   
   export interface ICalendarEventRequest {
