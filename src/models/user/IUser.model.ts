@@ -6,3 +6,7 @@ export interface IUser {
     password?: string; 
   }
   
+export interface ILoginRequest {
+    email: string;
+    password: string;
+}

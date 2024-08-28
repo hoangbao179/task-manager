@@ -1,27 +1,33 @@
+import { HttpStatusCode } from "../enums/http.status";
+import { IAuthService } from "../services/auth/iauth.service";
+import { formatResponse } from "../utils/response.utils";
 import { Request, Response } from 'express';
-import { AuthService } from '../services/auth.service';
-import { IUser } from 'models/user/IUser.model';
-import { HttpStatusCode } from '../enums/http.status';
-import { formatResponse } from '../utils/response.utils';
 
-const authService = new AuthService();
+class AuthController {
+  private authService: IAuthService;
 
-export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
-  try {
-    const token = await authService.login(email, password);
-    return res.status(HttpStatusCode.OK).json(formatResponse(token, ''));
-  } catch (error) {
-    return res.status(HttpStatusCode.UNAUTHORIZED).json(formatResponse(null, error.message));
+  constructor(authService: IAuthService) {
+      this.authService = authService;
   }
-};
 
-export const register = async (req: Request, res: Response) => {
-  try {
-    const user = await authService.register(req.body as IUser);
-    return res.status(HttpStatusCode.CREATED).json(formatResponse(user, ''));
-  } catch (error) {
-    return res.status(HttpStatusCode.BAD_REQUEST).json(formatResponse(null, "Register fail"));
-  }
-};
+  login = async (req: Request, res: Response) : Promise<Response>  => {
+    
+    try {
+      const token = await this.authService.login((req.body as any).email, (req.body as any).password);
+      return res.status(HttpStatusCode.OK).json(formatResponse(token, ''));
+    } catch (error) {
+      return res.status(HttpStatusCode.UNAUTHORIZED).json(formatResponse(null, error.message));
+    }
+  };
+
+ register = async (req: Request, res: Response): Promise<Response>  => {
+    try {
+      const user = await this.authService.register(req.body as any);
+      return res.status(HttpStatusCode.CREATED).json(formatResponse(user, ''));
+    } catch (error) {
+      return res.status(HttpStatusCode.BAD_REQUEST).json(formatResponse(null, "Register fail"));
+    }
+  };
+}
+
+export default AuthController;

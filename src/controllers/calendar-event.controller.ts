@@ -3,15 +3,21 @@ import { formatResponse } from '../utils/response.utils';
 import { HttpStatusCode } from '../enums/http.status';
 import { ICreateCalendarEventParams, IUpdateCalendarEventParams } from '../models/calendar/calendar-request';
 import CalendarEventService from '../services/calendar/calendar-event.service';
+import { ICalendarEventService } from 'services/calendar/icalendar-event.service';
 
 class CalendarEventController {
-  private calendarEventService = new CalendarEventService();
+
+  private calendarEventService: ICalendarEventService;
+  
+  constructor(calendarEventService: ICalendarEventService) {
+    this.calendarEventService = calendarEventService;
+  }
 
   getCalendarEvents = async (req: Request, res: Response) => {
     const userId = (req as any).userId;
     const result = await this.calendarEventService.getFilteredCalendarEvents(userId, req.body);
-    if (result.statusCode === 200) {
-      return res.status(200).json(formatResponse(result.data, ''));
+    if (result.statusCode === HttpStatusCode.OK) {
+      return res.status(HttpStatusCode.OK).json(formatResponse(result.data, ''));
     } else {
       return res.status(result.statusCode).json({ message: result.message });
     }
@@ -74,4 +80,4 @@ class CalendarEventController {
 
 }
 
-export default new CalendarEventController();
+export default CalendarEventController;
