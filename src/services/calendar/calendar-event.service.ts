@@ -105,8 +105,26 @@ class CalendarEventService implements ICalendarEventService {
 
   async updateCalendarEvent(id: string, params: IUpdateCalendarEventParams): Promise<number> {
       params.status = this.validateStatus(params.status);
-      const result = await this.calendarEventRepository.update(id, params);
-      return result.affected || 0;
+  
+      const utcStartDate = this.adjustToUtc(params.startDate, params.startTime, params.minutesOffset, params.isAllDay);
+      const utcEndDate = this.adjustToUtc(params.endDate, params.endTime, params.minutesOffset, params.isAllDay);
+    
+      try {
+        const event :  Partial<CalendarEvent> = {
+          id: id,
+          title: params.title,
+          description: params.description,
+          status: params.status,
+          startDate: utcStartDate,
+          endDate: utcEndDate,
+          isAllDay: params.isAllDay || false
+        };
+        const result = await this.calendarEventRepository.update(id, event);
+        return result.affected || 0;
+      } catch (error) {
+        throw new Error(error instanceof Error ? error.message : 'Failed to update calendar event');
+      }
+    
   }
 
   async deleteCalendarEvent(id: string): Promise<number> {
