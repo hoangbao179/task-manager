@@ -14,7 +14,11 @@ class AuthService implements IAuthService {
 
   async login(email: string, password: string): Promise<string> {
     const user = await this.userService.getUserByEmail(email);
-    if (!user || !(bcrypt.compare(password, user.password))) {
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       throw new Error('Invalid email or password');
     }
 
@@ -34,7 +38,6 @@ class AuthService implements IAuthService {
     newUser.firstName = userData.firstName
     newUser.email = userData.email;
     newUser.password = hashedPassword;
-
     const createdUser = await this.userService.createUser(newUser);
     return createdUser;
   }

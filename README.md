@@ -1,7 +1,7 @@
 
 # Task Manager
 
-This is a task management application built with Node.js, TypeScript, and PostgreSQL.
+This project is an implementation of an authentication service using Express and TypeScript. It follows best practices such as Dependency Injection, Asynchronous Programming, and Secure Password Handling using `bcrypt` and JWT.
 
 ## Prerequisites
 
@@ -19,29 +19,15 @@ This is a task management application built with Node.js, TypeScript, and Postgr
    npm install
 4. Create a `.env` file  and configuring it according to your environment:
    cp .env
-5. Run the migrations:
-   npm run migrate
+   JWT_SECRET=your_jwt_secret_key
 
 ## Running the Application
 
 ### Locally
-npm run dev
-### With Docker
+- npm run start
 
-docker-compose up --build
-
-## API Endpoints
-
-- **User Routes**
-  - `POST /api/users`: Create a new user
-  - `GET /api/users`: Get all users
-  - `GET /api/users/:id`: Get a user by ID
-
-- **Calendar Event Routes**
-  - `POST /api/calendar-events`: Create a new event
-  - `GET /api/calendar-events`: Get all events
-  - `GET /api/calendar-events/:id`: Get an event by ID
-
+## Features
+- Calendar Events Management: Allows users to create, update, retrieve, and delete calendar events, ensuring that events are associated with the correct user.
 
 ## License
 

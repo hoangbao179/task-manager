@@ -11,7 +11,7 @@ class UserService implements IUserService {
   }
 
   async createUser(userData: User): Promise<User> {
-    const user = this.userRepository.create(userData);
+    const user = await this.userRepository.create(userData);
     return await this.userRepository.save(user);
   }
 
