@@ -29,9 +29,4 @@ export class User {
 
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt!: Date;
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
 }

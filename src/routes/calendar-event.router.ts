@@ -1,11 +1,16 @@
-import { createCalendarEvent, getCalendarEvents, getCalendarEventById, updateCalendarEvent, deleteCalendarEvent } from '../controllers/calendar-event.controller';
+import CalendarEventController from '../controllers/calendar-event.controller';
 import * as express from 'express';
+import CalendarEventService from '../services/calendar/calendar-event.service';
+
+const calendarService = new CalendarEventService();
+const calendarEventController = new CalendarEventController(calendarService);
 
 const router = express.Router();
-router.post('', createCalendarEvent);
-router.post('/query', getCalendarEvents);
-router.get('/:id', getCalendarEventById);
-router.put('/:id', updateCalendarEvent);
-router.delete('/:id', deleteCalendarEvent);
+
+router.post('', calendarEventController.createCalendarEvent);
+router.post('/query', calendarEventController.getCalendarEvents);
+router.get('/:id', calendarEventController.getCalendarEventById);
+router.put('/:id', calendarEventController.updateCalendarEvent);
+router.delete('/:id', calendarEventController.deleteCalendarEvent);
 
 export default router;
