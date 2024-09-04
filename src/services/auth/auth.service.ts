@@ -1,28 +1,28 @@
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
-import { IUserService } from '../../services/user/iuser.service';
-import { IUser } from '../../models/user/IUser.model';
+import { IUserService } from '../user/user.interface';
+import { ILoginRequest, IUser } from '../../models/user/IUser.model';
 import { User } from '../../entities/user';
-import { IAuthService } from './iauth.service';
+import { IAuthService } from './auth.interface';
 
-class AuthService implements IAuthService {
+export class AuthService implements IAuthService {
   private userService: IUserService;
 
   constructor(userService: IUserService) {
     this.userService = userService;
   }
 
-  async login(email: string, password: string): Promise<string> {
-    const user = await this.userService.getUserByEmail(email);
+  async login(req: ILoginRequest): Promise<string> {
+    const user = await this.userService.getUserByEmail(req.email);
     if (!user) {
       throw new Error('User not found');
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(req.password, user.password);
     if (!isPasswordValid) {
       throw new Error('Invalid email or password');
     }
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET!, { expiresIn: '72h' });
+    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET!, { expiresIn: '24h' });
     return token;
   }
 
@@ -41,6 +41,13 @@ class AuthService implements IAuthService {
     const createdUser = await this.userService.createUser(newUser);
     return createdUser;
   }
-}
+  
+  generateAccessToken(user: User): string {
+    return jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET!, { expiresIn: '15m' });
+  }
 
-export default AuthService;
+  generateRefreshToken(user: User): string {
+    return jwt.sign({ userId: user.id }, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: '7d' });
+  }
+
+}

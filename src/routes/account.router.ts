@@ -1,6 +1,5 @@
-import * as express from 'express';
-import UserService from '../services/user/user.service';
-import UserController from '../controllers/user.controller';
+import { UserService } from '../services/user/user.service';
+import { UserController } from '../controllers/user.controller';
 import { Router } from 'express';
 
 const userService = new UserService();
@@ -10,5 +9,3 @@ const router = Router();
 router.get('/', userController.getCurrentUser);
 
 export default router;
-
-

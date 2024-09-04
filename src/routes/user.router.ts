@@ -1,6 +1,7 @@
+import { UserController } from '../controllers/user.controller';
 import * as express from 'express';
-import UserService from '../services/user/user.service';
-import UserController from '../controllers/user.controller';
+import { UserService } from '../services/user/user.service';
+
 
 const userService = new UserService();
 const userController = new UserController(userService);

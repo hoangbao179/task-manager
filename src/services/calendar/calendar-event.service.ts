@@ -4,10 +4,10 @@ import { CalendarEvent } from "../../entities/calendar-event";
 import { CalendarEventStatus } from "../../enums/calendar-event.status";
 import { ICalendarEventRequest, ICreateCalendarEventParams, IUpdateCalendarEventParams } from "../../models/calendar/calendar-request";
 import { CalendarEventResponse, IFilteredCalendarEventResponse } from "../../models/calendar/calendar-response";
-import { ICalendarEventService } from "./icalendar-event.service";
+import { ICalendarEventService } from "./calendar-event.interface";
 import { HttpStatusCode } from "../../enums/http.status";
 
-class CalendarEventService implements ICalendarEventService {
+export class CalendarEventService implements ICalendarEventService {
 
   private calendarEventRepository: Repository<CalendarEvent> = AppDataSource.getRepository(CalendarEvent);
 
@@ -147,6 +147,3 @@ class CalendarEventService implements ICalendarEventService {
   };
 
 }
-
-export default CalendarEventService;
-

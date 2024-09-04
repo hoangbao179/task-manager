@@ -1,6 +1,6 @@
-import CalendarEventController from '../controllers/calendar-event.controller';
+import { CalendarEventService } from '../services/calendar/calendar-event.service';
+import { CalendarEventController } from '../controllers/calendar-event.controller';
 import * as express from 'express';
-import CalendarEventService from '../services/calendar/calendar-event.service';
 
 const calendarService = new CalendarEventService();
 const calendarEventController = new CalendarEventController(calendarService);

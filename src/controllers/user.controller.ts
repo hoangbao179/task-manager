@@ -2,14 +2,15 @@ import { Request, Response } from 'express';
 import { User } from '../entities/user';
 import { HttpStatusCode } from '../enums/http.status';
 import { formatResponse } from '../utils/response.utils';
-import { IUserService } from '../services/user/iuser.service';
+import { IUserService } from '../services/user/user.interface';
 
-class UserController {
+export class UserController {
   private userService: IUserService;
 
   constructor(userService: IUserService) {
       this.userService = userService;
   }
+
    createUser = async (req: Request, res: Response): Promise<Response> =>  {
     try {
       const userData: User = req.body;
@@ -81,5 +82,3 @@ class UserController {
     }
   };
 }
-
-export default UserController;

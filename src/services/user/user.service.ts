@@ -1,8 +1,7 @@
 import { AppDataSource } from "../../config/data-source";
-import { IUserService } from "./iuser.service";
+import { IUserService } from "./user.interface";
 import { User } from "../../entities/user";
-
-class UserService implements IUserService {
+export class UserService implements IUserService {
 
   private userRepository = AppDataSource.getRepository(User);
 
@@ -19,7 +18,6 @@ class UserService implements IUserService {
     return await this.userRepository.findOneBy({ email });
   }
 
-
   async updateUser(userId: string, user: Partial<User>): Promise<User | null> {
     await this.userRepository.update(userId, user);
     return await this.getUserById(userId);
@@ -33,5 +31,3 @@ class UserService implements IUserService {
     return await this.userRepository.find();
   }
 }
-
-export default UserService;

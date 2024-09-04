@@ -2,10 +2,10 @@ import { Request, Response } from 'express';
 import { formatResponse } from '../utils/response.utils';
 import { HttpStatusCode } from '../enums/http.status';
 import { ICreateCalendarEventParams, IUpdateCalendarEventParams } from '../models/calendar/calendar-request';
-import CalendarEventService from '../services/calendar/calendar-event.service';
-import { ICalendarEventService } from 'services/calendar/icalendar-event.service';
+import { ICalendarEventService } from '../services/calendar/calendar-event.interface';
 
-class CalendarEventController {
+
+export class CalendarEventController {
 
   private calendarEventService: ICalendarEventService;
   
@@ -80,4 +80,3 @@ class CalendarEventController {
 
 }
 
-export default CalendarEventController;

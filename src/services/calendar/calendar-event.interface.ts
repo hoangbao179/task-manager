@@ -3,7 +3,6 @@ import { ICalendarEventRequest, ICreateCalendarEventParams, IUpdateCalendarEvent
 import { CalendarEventResponse, IFilteredCalendarEventResponse } from "../../models/calendar/calendar-response";
 
 export interface ICalendarEventService {
-
      getFilteredCalendarEvents(userId: string, request: ICalendarEventRequest):Promise<IFilteredCalendarEventResponse>;
 
      createCalendarEvent(params: ICreateCalendarEventParams, userId: string): Promise<CalendarEvent>;
