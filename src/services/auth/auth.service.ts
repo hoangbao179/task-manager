@@ -12,7 +12,7 @@ export class AuthService implements IAuthService {
     this.userService = userService;
   }
 
-  async login(req: ILoginRequest): Promise<string> {
+  async login(req: ILoginRequest): Promise<any> {
     const user = await this.userService.getUserByEmail(req.email);
     if (!user) {
       throw new Error('User not found');
@@ -21,9 +21,11 @@ export class AuthService implements IAuthService {
     if (!isPasswordValid) {
       throw new Error('Invalid email or password');
     }
+    const accessToken = this.generateAccessToken(user);
+    const refreshToken = this.generateRefreshToken(user);
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET!, { expiresIn: '24h' });
-    return token;
+    return { accessToken, refreshToken };
+
   }
 
   async register(userData: IUser): Promise<User> {
@@ -42,11 +44,11 @@ export class AuthService implements IAuthService {
     return createdUser;
   }
   
-  generateAccessToken(user: User): string {
-    return jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET!, { expiresIn: '15m' });
+  async generateAccessToken(user: User): Promise<string> {
+    return jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET!, { expiresIn: '4h' });
   }
 
-  generateRefreshToken(user: User): string {
+  async generateRefreshToken(user: User): Promise<string>  {
     return jwt.sign({ userId: user.id }, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: '7d' });
   }
 

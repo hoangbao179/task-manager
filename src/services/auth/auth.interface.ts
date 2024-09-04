@@ -5,4 +5,8 @@ export interface IAuthService {
     login(req: ILoginRequest): Promise<string>;
 
     register(userData: IUser): Promise<User>;
+
+    generateAccessToken(user: User): Promise<string>;  
+
+    generateRefreshToken(user: User): Promise<string>;
 }

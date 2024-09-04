@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { HttpStatusCode } from '../enums/http.status';
-import { TokenPayload } from '../models/token/ITokenPayLoad';
+import { ITokenPayload } from '../models/token/ITokenPayLoad';
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -12,7 +12,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
       return res.status(HttpStatusCode.UNAUTHORIZED).json({ message: 'Access token not provided' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as TokenPayload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as ITokenPayload;
     if (!decoded || !decoded.userId) {
       return res.status(HttpStatusCode.BAD_REQUEST).json({ message: 'Invalid token' });
     }
