@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - dev  # Trigger this workflow on changes to the 'dev' branch
-
+  workflow_dispatch:  # Allow manual triggering of this workflow
 jobs:
   build:
     runs-on: ubuntu-latest  # Use the latest Ubuntu environment
